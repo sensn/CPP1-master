@@ -1,5 +1,9 @@
 #pragma once
+#include <thread>
 #include <iostream>
+#include <chrono>
+#include <windows.h>
+
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 
@@ -13,6 +17,12 @@ private:
 	int yloc = rand()%10;
     int xloc =rand()%200;
 	float lifespan =rand()%15+25;
+
+	//***
+	
+
+
+
 public:
 	
 
@@ -46,6 +56,14 @@ public:
 	void DisplaySnowflake();
 	bool isDead();
 
+	std::thread runThread() {
+		//std::this_thread::sleep_for(chrono::milliseconds(2000));
+		//Sleep(199);
+		return std::thread(&House::run, this);
+	}
+
+//	std::thread runThread() {
+	//	return std::thread([=] { run(); });
 	//Kopierkonstruktor
 	House(House& const original);
 
@@ -56,5 +74,23 @@ public:
 	bool operator != (const House& original) const { return !operator==(original); }
 
 	unsigned int id;  //for list of objects
+
+
+	bool isplaying = 1;
+	long begin = clock();
+	//double theend = clock();
+	int index = 1;
+	//Sleep(rand() % 2000);
+//	std::thread t1(&House::Update,this);
+	//do something else
+	//t1.join();
+
+	int thebpm = 120;
+	double ms = ((60000.0 / (double)thebpm) / (double)4);
+	//srand(time(0));
+	//ms = 1000;
+	double dur = (ms / 1000) * CLOCKS_PER_SEC;
+	double theend = (double)clock() + dur;
+
 };
 

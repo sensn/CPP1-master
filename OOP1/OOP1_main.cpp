@@ -14,14 +14,16 @@
 #include <math.h>
 #include <cmath>
 #include <vector>
+#include <ctime>
+#include "myTimer.h"
 
 
 #define MAXCOL 101 
 #define MAXROW 22
 
 void setSine(char[MAXCOL][MAXROW], int);
-void ShowConsoleCursor(bool showFlag);
-
+//void ShowConsoleCursor(bool showFlag);
+void wait_for_key_event();
 
 #define PI 3.141592
 
@@ -30,37 +32,124 @@ void plot(double value);
 void sineV();
 void sineH();
 
+
+///******
+DWORD WINAPI ThreadFunc(void* data);
+void get_input_events();
+extern int posX;
+extern int posY;
+extern int myMouseB;
+extern int myKey;
+extern int thebpm;
+int thebpm = 150;
+int posX = 0;
+int posY = 0;
+int myMouseB = 0;
+int myKey = 0;
+
+
+double ms;
+double dur;
+double swing = 0;
+double theswing = 0.33;
+
+////*****
+
+
+#ifdef max
+#undef max
+#endif
+
+using std::cin;
+using std::endl;
+using std::cerr;
+
+
 int main() {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);   //Playsequence in own Thread
+	
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi;     //get wigth height of screenbuffer
 	int columns, rows;
 
-	system("pause");
+	//MyTimer* tim=new MyTimer(10);   //BPM
+
+	//while (1) {
+	//	if (tim->start())
+	//		printf("500");
+
+	//}
+
+
+	//system("pause");
+	wait_for_key_event();
 	/*system("pause");
 	sineV();
 	system("pause");
 	sineH();
 	system("pause");*/
 
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	//
+	SetConsoleTitle("IT'S SNOWING IN THE SNOW, IT'S SNOWING IN THE SNOW");        
+
+	//remove ScrollBars
+
+	try {
+		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+		GetConsoleScreenBufferInfo(console, &csbi);
+		COORD scrollbar = {
+			csbi.srWindow.Right - csbi.srWindow.Left + 1,
+			csbi.srWindow.Bottom - csbi.srWindow.Top + 1
+		};
+
+		if (console == 0) {
+			throw 0;
+		}
+		else {
+			SetConsoleScreenBufferSize(console, scrollbar);
+		}
+	}
+	catch (...) {
+		cerr << "Error removing scrollbar" << endl;
+	}
+
+	// End remove Scrollbars
+      //ShowScrollBar(Console.WindowHandle, SB_BOTH, FALSE);
+    ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
+//	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);            // Get wigth height
+	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;                       // used to create SNowflake
 	rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
 	//printf("columns: %d\n", columns);
 	//printf("rows: %d\n", rows);
 
-	ShowConsoleCursor(false);
+	//ShowConsoleCursor(false);
 	bool issnowing = true;
 
 		//	input_Buffer_Events_main();
-	const unsigned n = 5;                   //number of snowflakes
+	const unsigned n = 15;  
+	int ci = 0;
+	std::thread tw1[n+20];
+	
+	//number of snowflakes
 	//House* snow=new House[num];
 	std::list<House*> listOfHouses;
 	std::list<House*>::iterator it =listOfHouses.begin();
-
+	std::list<MyTimer*> listOfTimers;
+	std::list<MyTimer*>::iterator ittim = listOfTimers.begin();
+	
 	for (int i = 0; i < n; i++) {
 		House* p = new House(rows,columns);
 		//p->id = 0;
 		listOfHouses.push_back(p);   //ein element einfügen
+	
+		MyTimer* tim = new MyTimer((rand()%150)+40);
+		listOfTimers.push_back(tim);
 	}
 	//listOfHouses.insert(listOfHouses.begin(),p );
 
@@ -73,11 +162,12 @@ int main() {
 	
 		std::cout <<  "LIST\n";
 }
+	
 	House* p = new House(rows, columns);
 	p->SetCity("Vienna");
 	it = listOfHouses.begin();
 	listOfHouses.remove(*it);
-
+	
 	for (auto v : listOfHouses) {
 		std::cout << v << "\n";
 		//v->SetCity("Vienna");
@@ -85,13 +175,13 @@ int main() {
 
 		std::cout << "LIST Now\n";
 	}
-
-	system("pause");
+	
+	wait_for_key_event();
 	vector <House*> elements;
 	House* el = new House(rows, columns);
-	//elements.assign(10, el);
-
 	
+	//std::thread tw1 = el->runThread();
+	//tw1.join();
 	
 	for (int i = 0; i < n; i++) {
 		printf("I : %d\n", i);
@@ -100,6 +190,7 @@ int main() {
 	}
 	int len = elements.size();
 	printf("len %d\n", len);
+
 
  	for (int i = 0; i < len-3; i++) {
 		printf("löschen %d\n", elements.size());
@@ -115,20 +206,48 @@ int main() {
 		std::cout << "VECTOR\n";
 		
 	}
-	system("pause");
-
+	wait_for_key_event();
+	
+	
 	while (issnowing) {
-
 		system("cls");
+		//system("cls");
 		/*for (int i = 0; i < n; i++) {
 			snow[i]->run();*/
 
 		
-
+		ci = 0;
+		ittim = listOfTimers.begin();
 		for (auto v : listOfHouses) {
-			v->run();
+			
+		//	v->thebpm = rand()%180+30;
+			if ((*ittim)->start()) {
+				printf("HUHU %d", (*ittim)->time_in_millis);
+				ittim++;
+			}
+			
+
+
+			v->dur = rand()%99;
+			if (v->isDead() == 0) {
+				tw1[ci] = v->runThread();
+				tw1[ci].detach();
+			}
+			//std::thread tw1 = v->runThread();
+			
+			//printf("THEBPM %d", v->thebpm);
+			//std::this_thread::sleep_for(2s);
+
+			
+			//tw1.[ci]->swap();
+		//tw1[ci].join();
+		//	v->run();
+		//	Sleep(300);
+			//tw1[ci].join();
+			ci++;
         }
 		it = listOfHouses.begin();
+		
 		while (it != listOfHouses.end())
 		{
 			if ((*it)->isDead()) {
@@ -146,13 +265,14 @@ int main() {
 			if (listOfHouses.size() == 0) {
 				issnowing = false;
 			}
+		
 		}
-
-		Sleep(200);
-
-
+		
+		//Sleep(200);
 
 
+		
+		
 	}
 		
 	
@@ -259,6 +379,22 @@ int main() {
 	//test();
 }
 
+DWORD WINAPI ThreadFunc(void* data) {
+	get_input_events();
+	//playSequence(lib);
+	// Do stuff.  This will be the first function called on the new thread.
+	// When this function returns, the thread goes away.  See MSDN for more details.
+	return 0;
+}
+
+void get_input_events() {
+	while (1){
+		do
+		{
+
+		} while (!input_Buffer_Events_main());
+}
+}
 
 
 void sineV() {	
@@ -321,4 +457,25 @@ void ShowConsoleCursor(bool showFlag)
 	GetConsoleCursorInfo(out, &cursorInfo);
 	cursorInfo.bVisible = showFlag; // set the cursor visibility
 	SetConsoleCursorInfo(out, &cursorInfo);
+}
+
+void setBpm(int updown) {
+	(updown > 0) ? thebpm++ : thebpm--;
+
+	ms = ((60000.0 / (double)thebpm) / (double)4);  //Milliseconds per quarternote
+	//ms = 125;  //Millisecond per quarternote
+	dur = (ms / 1000) * CLOCKS_PER_SEC;
+	//printf("MILLIS PER QUATER:%f\n", ms);
+	//printf("ms/Clocks :%f\n", dur);
+	//SetPosition(0, 0);
+	printf("%d BPM", thebpm);
+	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmBPMCHANGE\x1b[0m\n", 1, 1, rand() % 255, rand() % 255, rand() % 255, 0, 0, 0);
+}
+
+void wait_for_key_event() {
+
+printf("Pressen sie irgendeinen Schlüssel zum fortfahren...");
+
+	while(!myKey){}
+	myKey = 0;
 }

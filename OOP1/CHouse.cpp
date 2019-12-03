@@ -1,4 +1,13 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+
+
 #include "CHouse.h"
+#include <time.h>
+#include <Windows.h>
+#include<thread>
+#include <chrono>
+#include <thread>
 //Standardkonstruktor
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
@@ -45,6 +54,7 @@ House::House(int t_height, int t_width) {
 	this->yloc = rand()% t_height/4;
 	this->xloc = rand()%t_width;
 	this->lifespan = rand() % t_height;
+	//srand(time(0));
 	//std::cout << "P Konstruktor Int Int \n";
 }
 House::House(size_t t_height) {
@@ -114,14 +124,73 @@ void House::SetHeight(size_t t_height)
 
 
 void House::run() {
-	Update();
-	DisplaySnowflake();
+	
+	  //Milliseconds per quarternote
+	//ms = 125;  //Millisecond per quarternote
+	
+	//ms = 1000;
+	//dur = (ms / 1000) * CLOCKS_PER_SEC;
+	//theend = (double)clock() + dur;
+
+	//int mi = 0;
+
+	//while (!mi) {
+	//	begin = clock();
+	//	//theend = (double)(clock() + dur);
+	//	if ((double)begin > theend) {
+
+	//		theend = (double)(clock() + dur);
+	//		//theend = (double)clock() + dur + (dur * (swing));
+	//		yloc += 1;
+	//		lifespan -= 1;
+	//		DisplaySnowflake();
+	//		mi = 1;
+
+	//	}
+	//}
+
+	
+		//Update();
+	
+
+
+	//Sleep(599);
+
+	while (isDead()==false) {
+		////std::this_thread::sleep_for(2s);
+		//int mi = 0;
+	
+		//begin = clock();
+		////theend = (double)(clock() + dur);
+		//if ((double)begin > theend) {
+
+		//	theend = (double)(clock() + dur);
+		//	//theend = (double)clock() + dur + (dur * (swing));
+		
+			yloc += 1;
+			lifespan -= 1;
+			
+		
+			DisplaySnowflake();
+		
+
+		//}
+	//}
+		
+	}
+	
 }
 
-void House::Update() {
-	yloc += 1;
-	lifespan -= 1;
-}
+void House::Update(void) {
+	//Sleep(rand() % 300);
+	
+	//Sleep(rand() % 3000);
+
+	// ms = ((60000.0 / (double)thebpm) / (double)4);
+	//srand(time(0));
+	
+	}
+
 
 bool House::isDead() {
 	if (lifespan < 0.0) {
@@ -139,12 +208,13 @@ void House::Display()
 	
 	std::cout << "Width....:" << ((this->m_width >0)? this->m_width : 0) << std::endl;
 	std::cout << "Height....:" << ((this->m_height>0)? this->m_height : 0) << std::endl;
-
 }
 
 void House::DisplaySnowflake()
 {
+	
+	//Sleep(20);
+	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1,xloc ,0,0,0,0 , 0,0);    //mit Pos
 	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmTRUECOLORS\x1b[0m\n", i, 7, r, g, b, r, g, b, i / 6);    //mit Pos
-
 }

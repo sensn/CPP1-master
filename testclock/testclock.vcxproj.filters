@@ -13,35 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="BackupClass">
-      <UniqueIdentifier>{3f31f6ca-06e6-48b2-b39b-d7fbfe917965}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OOP1_main.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="CHouse.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="CHouseB.cpp">
-      <Filter>BackupClass</Filter>
-    </ClCompile>
-    <ClCompile Include="myTimer.cpp">
+    <ClCompile Include="testclock.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CHouse.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Input_Buffer_Events.hpp">
-      <Filter>Quelldateien</Filter>
-    </ClInclude>
-    <ClInclude Include="CHouseB.h">
-      <Filter>BackupClass</Filter>
-    </ClInclude>
-    <ClInclude Include="myTimer.h">
+    <ClInclude Include="timer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

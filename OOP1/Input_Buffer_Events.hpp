@@ -15,17 +15,35 @@ int test();
 
 HANDLE hStdin;
 DWORD fdwSaveOldMode;
-
+void setBpm(int updown);
+void SetPosition(int X, int Y);
 
 VOID ErrorExit(LPSTR);
 VOID KeyEventProc(KEY_EVENT_RECORD);
-VOID MouseEventProc(MOUSE_EVENT_RECORD);
+int MouseEventProc(MOUSE_EVENT_RECORD);
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
+
+bool ispressed = 0;
+extern int posX;
+extern int posY;
+extern int myMouseB;
+extern int myKey;
+extern int thebpm;
+//posX = 0;
+//posY = 0;
+//myMouseB = 0;
+
 int input_Buffer_Events_main(VOID)
 {
+	
+
+	int thebpm = 120;
+	bool leftispressed = 0;
+	int counter = 0;
+
 	DWORD cNumRead, fdwMode, i;
 	INPUT_RECORD irInBuf[128];
-	int counter = 0;
+	//int counter = 0;
 
 	// Get the standard input handle. 
 
@@ -38,6 +56,10 @@ int input_Buffer_Events_main(VOID)
 	if (!GetConsoleMode(hStdin, &fdwSaveOldMode))
 		printf("GetConsoleMode");
 
+	fdwMode = ENABLE_EXTENDED_FLAGS;
+	if (!SetConsoleMode(hStdin, fdwMode))
+		printf("SetConsoleMode");
+
 	// Enable the window and mouse input events. 
 
 	fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
@@ -46,8 +68,8 @@ int input_Buffer_Events_main(VOID)
 
 	// Loop to read and handle the next 100 input events. 
 
-	while (1)
-	{
+//	while (1)
+	//{
 		// Wait for the events. 
 
 		if (!ReadConsoleInput(
@@ -65,6 +87,7 @@ int input_Buffer_Events_main(VOID)
 			{
 			case KEY_EVENT: // keyboard input 
 				KeyEventProc(irInBuf[i].Event.KeyEvent);
+
 				break;
 
 			case MOUSE_EVENT: // mouse input 
@@ -85,7 +108,7 @@ int input_Buffer_Events_main(VOID)
 				break;
 			}
 		}
-	}
+	//} while
 
 	// Restore input mode on exit.
 
@@ -109,18 +132,23 @@ VOID KeyEventProc(KEY_EVENT_RECORD ker)
 {
 	printf("Key event: ");
 
-	if (ker.bKeyDown)
+	if (ker.bKeyDown) {
+		myKey = 1;
 		printf("key pressed\n");
-	else printf("key released\n");
+	}
+	else {
+		printf("key released\n");
+		myKey = 0;
+	}
 }
 
-VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
+int MouseEventProc(MOUSE_EVENT_RECORD mer)
 {
 #ifndef MOUSE_HWHEELED
 #define MOUSE_HWHEELED 0x0008
 #endif
-	printf("Mouse event: ");
-
+	//printf("Mouse event: ");
+	int wheelX = 0;
 	switch (mer.dwEventFlags)
 	{
 	case 0:
@@ -128,35 +156,67 @@ VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
 		if (mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
 		{
 			printf("left button press \n");
+			//SetPosition(mer.dwMousePosition.X, mer.dwMousePosition.Y);
+			//setColor(10);
+			//ispressed = 1;
+			posX = mer.dwMousePosition.X;
+			posY = mer.dwMousePosition.Y;
+			myMouseB = 1;
+			//print_colors();
+			//printf("*");
+			return 1;
+			//printf("left button press \n");
+
+			//printf("left clicked at x=%d, y=%d\n", mer.dwMousePosition.X, mer.dwMousePosition.Y);
 		}
 		else if (mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED)
 		{
-			printf("right button press \n");
+			//printf("right button press \n");
+			myMouseB = 2;
+			posX = mer.dwMousePosition.X;
+			posY = mer.dwMousePosition.Y;
+			return 1;
 		}
 		else
 		{
 			printf("button press\n");
+			myMouseB = 0;
+			ispressed = 0;
 		}
 		break;
 	case DOUBLE_CLICK:
-		
-		
-
-		printf("double click\n");
+	//		printf("double click\n");
 		break;
 	case MOUSE_HWHEELED:
-		printf("horizontal mouse wheel\n");
+	//	printf("horizontal mouse wheel\n");
 		break;
 	case MOUSE_MOVED:
-		printf("mouse moved\n");
+		//printf("mouse moved\n");
+		if (ispressed) {
+			//SetPosition(mer.dwMousePosition.X, mer.dwMousePosition.Y);
+			//
+			//printf("*");
+		}
 		break;
 	case MOUSE_WHEELED:
-		printf("vertical mouse wheel\n");
+		//printf("vertical mouse wheel\n");
+		wheelX = mer.dwButtonState;
+		if (wheelX > 0) {
+			printf("PO");
+			setBpm(1);
+		}
+		else {
+			printf("NE");
+			setBpm(0);
+
+		}
+		
 		break;
 	default:
 		printf("unknown\n");
 		break;
 	}
+	return 0;
 }
 
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD wbsr)
@@ -176,9 +236,9 @@ VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD wbsr)
 	size_t width = info.srWindow.Right - info.srWindow.Left;
 	size_t height = info.srWindow.Bottom - info.srWindow.Top;
 	
-	printf("Xs %d Y %d rows.\n", width, height);
+	//printf("Xs %d Y %d rows.\n", width, height);
 	//bool suc = SetWindowSize(width + 1, height + 1);
-	test1(width, height);
+	//test1(width, height);
 
 
 }
