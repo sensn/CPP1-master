@@ -3,7 +3,7 @@
 #include <iostream>
 #include <chrono>
 #include <windows.h>
-
+#include "thread_safe_random.hpp"
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 
@@ -17,7 +17,7 @@ private:
 	int yloc = rand()%10;
     int xloc =rand()%200;
 	float lifespan =rand()%15+25;
-
+	//int x= x = RANDOM();
 	//***
 	
 

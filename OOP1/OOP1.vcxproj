@@ -131,12 +131,14 @@
     <ClCompile Include="CHouseB.cpp" />
     <ClCompile Include="myTimer.cpp" />
     <ClCompile Include="OOP1_main.cpp" />
+    <ClCompile Include="thread_safe_random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CHouse.h" />
     <ClInclude Include="CHouseB.h" />
     <ClInclude Include="Input_Buffer_Events.hpp" />
     <ClInclude Include="myTimer.h" />
+    <ClInclude Include="thread_safe_random.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

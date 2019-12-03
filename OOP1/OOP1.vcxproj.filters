@@ -30,6 +30,9 @@
     <ClCompile Include="myTimer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="thread_safe_random.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CHouse.h">
@@ -42,6 +45,9 @@
       <Filter>BackupClass</Filter>
     </ClInclude>
     <ClInclude Include="myTimer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_safe_random.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

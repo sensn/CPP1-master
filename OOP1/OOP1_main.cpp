@@ -22,7 +22,7 @@
 #define MAXROW 22
 
 void setSine(char[MAXCOL][MAXROW], int);
-//void ShowConsoleCursor(bool showFlag);
+void ShowConsoleCursor(bool showFlag);
 void wait_for_key_event();
 
 #define PI 3.141592
@@ -128,13 +128,17 @@ int main() {
 	//printf("columns: %d\n", columns);
 	//printf("rows: %d\n", rows);
 
-	//ShowConsoleCursor(false);
+	
 	bool issnowing = true;
 
 		//	input_Buffer_Events_main();
-	const unsigned n = 15;  
+	const unsigned n = 500;                   //number of TimerThreads ->Objects  
+
+
+
 	int ci = 0;
-	std::thread tw1[n+20];
+	//std::thread tw1[n];
+	std::thread timerthread[n];
 	
 	//number of snowflakes
 	//House* snow=new House[num];
@@ -142,14 +146,16 @@ int main() {
 	std::list<House*>::iterator it =listOfHouses.begin();
 	std::list<MyTimer*> listOfTimers;
 	std::list<MyTimer*>::iterator ittim = listOfTimers.begin();
-	
+	srand(time(NULL));
+	double myrnd;
 	for (int i = 0; i < n; i++) {
 		House* p = new House(rows,columns);
 		//p->id = 0;
 		listOfHouses.push_back(p);   //ein element einfügen
-	
-		MyTimer* tim = new MyTimer((rand()%150)+40);
+		myrnd = (RANDOM() * 1000);
+		MyTimer* tim = new MyTimer((int) myrnd, rows,columns);                            //MYTIMER INIT
 		listOfTimers.push_back(tim);
+		
 	}
 	//listOfHouses.insert(listOfHouses.begin(),p );
 
@@ -207,32 +213,78 @@ int main() {
 		
 	}
 	wait_for_key_event();
+	system("cls");
+	ShowConsoleCursor(false);
+	ittim = listOfTimers.begin();
+	for (int i = 0; i < n; i++) {
+		
+		timerthread[i] = (*ittim)->runThread();
+	timerthread[i].detach();
+			ittim++;
+		}
+	while (1) {
 	
+	/*	for (auto v : listOfTimers) {
+		
+
+			
+				
+
+
+		}*/
 	
+	}
+
 	while (issnowing) {
-		system("cls");
+		//system("cls");
 		//system("cls");
 		/*for (int i = 0; i < n; i++) {
 			snow[i]->run();*/
-
+		
 		
 		ci = 0;
 		ittim = listOfTimers.begin();
+		
+
 		for (auto v : listOfHouses) {
+
 			
-		//	v->thebpm = rand()%180+30;
-			if ((*ittim)->start()) {
-				printf("HUHU %d", (*ittim)->time_in_millis);
-				ittim++;
-			}
 			
 
+			//	v->thebpm = rand()%180+30;
+				//while (1) {
+			
+		//	while(1){
 
-			v->dur = rand()%99;
-			if (v->isDead() == 0) {
-				tw1[ci] = v->runThread();
-				tw1[ci].detach();
+				it = listOfHouses.begin();
+				ittim = listOfTimers.begin();
+		//	while (ittim != listOfTimers.end()) {
+				if ((*ittim)->thetime == 1) {
+					printf("HUHU %d", (*ittim)->time_in_millis);
+					ittim++;
+					//it++;
+					(*it)->Update();
+					//v->Update();
+				}
+				else {
+					ittim++;
+					//printf("nono");
+				}
+				
 			}
+		
+//		}
+
+
+			////***
+			//v->dur = rand()%99;
+			//if (v->isDead() == 0) {
+			//	tw1[ci] = v->runThread();
+			//	tw1[ci].detach();
+			//}
+			////****
+
+
 			//std::thread tw1 = v->runThread();
 			
 			//printf("THEBPM %d", v->thebpm);
@@ -245,7 +297,7 @@ int main() {
 		//	Sleep(300);
 			//tw1[ci].join();
 			ci++;
-        }
+       // }
 		it = listOfHouses.begin();
 		
 		while (it != listOfHouses.end())
@@ -468,8 +520,8 @@ void setBpm(int updown) {
 	//printf("MILLIS PER QUATER:%f\n", ms);
 	//printf("ms/Clocks :%f\n", dur);
 	//SetPosition(0, 0);
-	printf("%d BPM", thebpm);
-	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmBPMCHANGE\x1b[0m\n", 1, 1, rand() % 255, rand() % 255, rand() % 255, 0, 0, 0);
+	printf("\033[%d;%dH %d BPM",1,1, thebpm);
+	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmBPMCHANGE\x1b[0m\n", 1, 1, rand() % 255, rand() % 255, rand() % 255, 0, 0, 0);
 }
 
 void wait_for_key_event() {

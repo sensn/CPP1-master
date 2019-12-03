@@ -130,14 +130,14 @@ VOID ErrorExit(LPSTR lpszMessage)
 
 VOID KeyEventProc(KEY_EVENT_RECORD ker)
 {
-	printf("Key event: ");
+	//printf("Key event: ");
 
 	if (ker.bKeyDown) {
 		myKey = 1;
-		printf("key pressed\n");
+		//printf("key pressed\n");
 	}
 	else {
-		printf("key released\n");
+	//	printf("key released\n");
 		myKey = 0;
 	}
 }
@@ -155,7 +155,7 @@ int MouseEventProc(MOUSE_EVENT_RECORD mer)
 
 		if (mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
 		{
-			printf("left button press \n");
+			//printf("left button press \n");
 			//SetPosition(mer.dwMousePosition.X, mer.dwMousePosition.Y);
 			//setColor(10);
 			//ispressed = 1;
@@ -179,7 +179,7 @@ int MouseEventProc(MOUSE_EVENT_RECORD mer)
 		}
 		else
 		{
-			printf("button press\n");
+		//	printf("button press\n");
 			myMouseB = 0;
 			ispressed = 0;
 		}
@@ -202,11 +202,11 @@ int MouseEventProc(MOUSE_EVENT_RECORD mer)
 		//printf("vertical mouse wheel\n");
 		wheelX = mer.dwButtonState;
 		if (wheelX > 0) {
-			printf("PO");
+			//printf("PO");
 			setBpm(1);
 		}
 		else {
-			printf("NE");
+			//printf("NE");
 			setBpm(0);
 
 		}
@@ -221,8 +221,8 @@ int MouseEventProc(MOUSE_EVENT_RECORD mer)
 
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD wbsr)
 {
-	printf("Resize event\n");
-	printf("Console screen buffer is %d columns by %d rows.\n", wbsr.dwSize.X, wbsr.dwSize.Y);
+	//printf("Resize event\n");
+	//printf("Console screen buffer is %d columns by %d rows.\n", wbsr.dwSize.X, wbsr.dwSize.Y);
 
 	//test();
 	int muh = wbsr.dwSize.X;

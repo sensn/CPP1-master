@@ -51,11 +51,13 @@ House::House(size_t t_height, size_t t_width) {
 	std::cout << "K2\n";
 }
 House::House(int t_height, int t_width) {
-	this->yloc = rand()% t_height/4;
-	this->xloc = rand()%t_width;
-	this->lifespan = rand() % t_height;
-	//srand(time(0));
-	//std::cout << "P Konstruktor Int Int \n";
+	
+	this->yloc = (int)(RANDOM()* t_height)/4;
+	this->xloc = (int) (RANDOM() * t_width);
+	this->lifespan = (int)((RANDOM()*  t_height) - yloc);
+	this->m_height = t_height;
+	this->m_width = t_width;
+//	std::cout << "P Konstruktor Int Int \n";
 }
 House::House(size_t t_height) {
 	this->m_height = t_height;
@@ -188,12 +190,24 @@ void House::Update(void) {
 
 	// ms = ((60000.0 / (double)thebpm) / (double)4);
 	//srand(time(0));
+	yloc += 1;
+	lifespan -= 1;
+	//std::cout << lifespan;
 	
+	DisplaySnowflake();
+	isDead();
 	}
 
 
 bool House::isDead() {
-	if (lifespan < 0.0) {
+	if (lifespan < 5.0) {
+		
+		printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc, xloc, 0, 0, 0, 0, 0, 0);
+		//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1, xloc, 0, 0, 0, 0, 0, 0);
+	
+		this->yloc = (int)(RANDOM() * (m_height / 8));
+		this->xloc = (int)(RANDOM() * m_width);
+		lifespan = (int)((RANDOM() * m_height) - yloc);
 		return true;
 	}
 	else {
@@ -214,7 +228,15 @@ void House::DisplaySnowflake()
 {
 	
 	//Sleep(20);
-	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1,xloc ,0,0,0,0 , 0,0);    //mit Pos
+	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1,xloc ,0,0,0,0 , 0,0);    //mit Pos
 	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos
+	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos
+
+	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc , 255,  255, 255,0 , 0,0);    //mit Pos
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmTRUECOLORS\x1b[0m\n", i, 7, r, g, b, r, g, b, i / 6);    //mit Pos
 }
+
+
+//void House::fetch_random_number(double& x) {
+	
+//}
