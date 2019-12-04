@@ -40,8 +40,8 @@ extern int posX;
 extern int posY;
 extern int myMouseB;
 extern int myKey;
-extern int thebpm;
-int thebpm = 150;
+//extern int thebpm;
+int thebpm = 100;
 int posX = 0;
 int posY = 0;
 int myMouseB = 0;
@@ -68,7 +68,7 @@ using std::cerr;
 int main() {
 	HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);   //Playsequence in own Thread
 	//HWND WINAPI GetConsoleWindow(void);
-	
+	srand(time(NULL));
 	CONSOLE_SCREEN_BUFFER_INFO csbi;     //get wigth height of screenbuffer
 	int columns, rows;
 
@@ -116,7 +116,7 @@ int main() {
 	}
 
 	// End remove Scrollbars
-      //ShowScrollBar(Console.WindowHandle, SB_BOTH, FALSE);
+      ShowScrollBar(GetConsoleWindow(), SB_BOTH, FALSE);
     ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 //	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
@@ -132,59 +132,62 @@ int main() {
 	bool issnowing = true;
 
 		//	input_Buffer_Events_main();
-	const unsigned n = 10;                   //number of TimerThreads ->Objects  
+	const unsigned n = 100;                   //number of TimerThreads ->Objects  
 
 
 
 	int ci = 0;
 	//std::thread tw1[n];
-	std::thread timerthread[n];
 	
-	//number of snowflakes
-	//House* snow=new House[num];
+	std::thread timerthread[n];              //the threads
+	
+	
 	std::list<House*> listOfHouses;
 	std::list<House*>::iterator it =listOfHouses.begin();
 	std::list<MyTimer*> listOfTimers;
 	std::list<MyTimer*>::iterator ittim = listOfTimers.begin();
-	srand(time(NULL));
+	
+	
+
+	//**TIMER THING
 	double myrnd;
 	for (int i = 0; i < n; i++) {
 		House* p = new House(rows,columns);
 		//p->id = 0;
 		listOfHouses.push_back(p);   //ein element einfügen
+		Seed(rand()%12000);
 		myrnd = (RANDOM() * 1000);
 		MyTimer* tim = new MyTimer((int) myrnd, rows,columns);                            //MYTIMER INIT
 		listOfTimers.push_back(tim);
 		
 	}
 	//listOfHouses.insert(listOfHouses.begin(),p );
-
+	//**TIMER THING
 	
 
-	for (auto v : listOfHouses){
+	/*for (auto v : listOfHouses){
 		std::cout << v << "\n";
 		v->SetCity("Vienna");
 		v->Display();
-	
 		std::cout <<  "LIST\n";
-}
-	
-	House* p = new House(rows, columns);
+	}
+	*/
+
+	/*House* p = new House(rows, columns);
 	p->SetCity("Vienna");
 	it = listOfHouses.begin();
-	listOfHouses.remove(*it);
+	listOfHouses.remove(*it);*/
 	
-	for (auto v : listOfHouses) {
-		std::cout << v << "\n";
-		//v->SetCity("Vienna");
-		v->Display();
-
-		std::cout << "LIST Now\n";
-	}
+	//for (auto v : listOfHouses) {
+	//	std::cout << v << "\n";
+	//	//v->SetCity("Vienna");
+	//	v->Display();
+ //   	std::cout << "LIST Now\n";
+	//}
 	
 	wait_for_key_event();
 	vector <House*> elements;
-	House* el = new House(rows, columns);
+	//House* el = new House(rows, columns);
 	
 	//std::thread tw1 = el->runThread();
 	//tw1.join();
@@ -195,23 +198,26 @@ int main() {
 		elements.push_back(el);
 	}
 	int len = elements.size();
-	printf("len %d\n", len);
-
-
- 	for (int i = 0; i < len-3; i++) {
-		printf("löschen %d\n", elements.size());
-		delete elements[elements.size()-1];
-		elements.erase(elements.end()-1);
-		//elements.erase(elements.begin() + i);
-		
-	}
+	printf("len elements %d\n", len);
 	
-	for (auto v : elements) {
+
+ //	for (int i = 0; i < len-3; i++) {
+	//	printf("löschen %d\n", elements.size());
+	//	delete elements[elements.size()-1];
+	//	elements.erase(elements.end()-1);
+	//	//elements.erase(elements.begin() + i);
+	//	
+	//}
+	
+	/*for (auto v : elements) {
 		std::cout << v << "\n";
 		v->Display();
 		std::cout << "VECTOR\n";
 		
-	}
+	}*/
+
+
+
 	wait_for_key_event();
 	ShowConsoleCursor(true);
 	system("cls");
@@ -219,6 +225,7 @@ int main() {
 	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, 0);
 	
+	//****************TIMER THREADS**************************
 	ittim = listOfTimers.begin();
 	for (int i = 0; i < n; i++)
 	{
@@ -226,12 +233,54 @@ int main() {
 	timerthread[i].detach();
 			ittim++;
 	}
+	//****************
+	while(1){}
+
+
+	unsigned int tmp=0;
+	vector <unsigned int> times;
+	for (int i = 0; i < n; i++) {
+		printf("I : %d", i);
+		//tmp = (rand() % (thebpm + 1 - 20)) + thebpm;
+		//tmp =  30+rand() % 50;
+		//tmp = rand() % thebpm + 20;
+		Seed(rand() % 12000);
+		tmp = (RANDOM() * thebpm)+20;
+	    times.push_back(tmp);
+		printf("->  %d\n", tmp);
+	}
+	wait_for_key_event();
+
+	system("cls");
+	unsigned int timeit = 0;
+	int timeslength = times.size();
+	
+	//while (issnowing) {
+	//	for (int i = 0; i < timeslength; i++) {
+
+	//		if (timeit % times[i] == 0) {
+	//			elements[i]->Update();
+	//		}
+	//		if (elements[i]->isDead()) {
+	//			//tmp =(rand() % (thebpm + 1 - 20)) + thebpm;
+	//			//tmp = rand()%thebpm+20;
+	//			//tmp = (RANDOM() * thebpm)+20;
+	//			tmp = 30 + rand() % 50;
+	//			times[i] = tmp;
+	//			//	printf("\033[%d;%dH %d->  %d\n",2,2,i, times[i]);
+	//		}
+
+
+	//	}
+	//	timeit++;
+	//	Sleep(2);
+	//	if (timeit == 1000)
+	//		timeit = 0;
+	//}
+
 
 	while (issnowing) {
-		/*	for (auto v : listOfTimers) {
-			}*/
-	}
-
+}
 	while (issnowing) {
 		//system("cls");
 		//system("cls");

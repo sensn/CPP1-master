@@ -28,7 +28,7 @@ extern int posX;
 extern int posY;
 extern int myMouseB;
 extern int myKey;
-extern int thebpm;
+//extern int thebpm;
 //posX = 0;
 //posY = 0;
 //myMouseB = 0;
@@ -37,7 +37,7 @@ int input_Buffer_Events_main(VOID)
 {
 	
 
-	int thebpm = 120;
+
 	bool leftispressed = 0;
 	int counter = 0;
 
