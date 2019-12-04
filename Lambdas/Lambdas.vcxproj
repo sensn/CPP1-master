@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{02FFAB37-BF84-4831-B10E-26B17DAEAA80}</ProjectGuid>
+    <ProjectGuid>{47157C62-C622-4754-BF55-D486A982D4D2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>bettertimer</RootNamespace>
+    <RootNamespace>Lambdas</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,11 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bettertimer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="event.hpp" />
-    <ClInclude Include="timer.h" />
+    <ClCompile Include="Lambdas.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

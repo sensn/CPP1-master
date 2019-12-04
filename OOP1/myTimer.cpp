@@ -28,7 +28,7 @@ int MyTimer::start() {
 	//ms = 1000;
 	this->dur = (ms / 1000) * CLOCKS_PER_SEC;
 	this->theend = (double)clock() + dur;
-	House* p = new House(m_row, m_column);
+	p = new House(m_row, m_column);
 	//House* p = new House(rand()%20, rand() % 20);
 
 
@@ -49,7 +49,7 @@ int MyTimer::start() {
 			//thetime = 0;
 			if (p->isDead()) {
 
-				this->dur = (((60000.0 / (double)((RANDOM()*1000)+2000)) / (double)4) / 1000) * CLOCKS_PER_SEC;
+				this->dur = (((60000.0 / (double)((RANDOM()*1000))) / (double)4) / 1000) * CLOCKS_PER_SEC;
 				//printf("DEAD");
 			}
 		}

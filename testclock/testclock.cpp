@@ -21,7 +21,7 @@ int main() {
 	int countMeUp = 0;
 
 	
-	Timer tim[3];
+	
 
 
 	
@@ -33,7 +33,7 @@ int main() {
 
 	t1.start();
 
-	cin.get();
+	std::cin.get();
 	t1.stop();
 
 	/*
@@ -46,9 +46,15 @@ int main() {
 		after initializing the timer instance.
 	*/
 
+	//Timer t3[1] = { Timer([&]() {countMeUp++; std::cout << countMeUp << endl; },500) };       //     ????
+	//Timer t4[2] = { Timer([&]() {countMeUp++; cout << countMeUp << endl; },500), Timer([&]() {countMeUp++; cout << countMeUp << endl; },100) };       //     ????
+	//t3[0].start();
+
+
+	printf("EXAMPLE 2");
 	int iGoUp = 0, iGoDown = 10;
 	Timer t2;
-
+	
 	t2.setFunc([&]() {
 		if (++iGoUp == --iGoDown)
 			t2.stop();
@@ -58,7 +64,7 @@ int main() {
 			->start();
 
 
-		cin.clear();
-		cin.get();
+		std::cin.clear();
+		std::cin.get();
 		return 0;
 }

@@ -200,9 +200,9 @@ void House::Update(void) {
 
 
 bool House::isDead() {
-	if (lifespan < 5.0) {
-		
-		printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc, xloc, 0, 0, 0, 0, 0, 0);
+	if (lifespan < 1.0) {
+		printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc, xloc, 12, 12, 12, 12, 12, 12);
+		//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc, xloc, 0, 0, 0, 0, 0, 0);
 		//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1, xloc, 0, 0, 0, 0, 0, 0);
 	
 		this->yloc = (int)(RANDOM() * (m_height / 8));
@@ -228,7 +228,8 @@ void House::DisplaySnowflake()
 {
 	
 	//Sleep(20);
-	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1,xloc ,0,0,0,0 , 0,0);    //mit Pos
+	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1, xloc, 12, 12, 12, 12, 12, 12);
+	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1,xloc ,0,0,0,0 , 0,0);    //mit Pos
 	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos
 

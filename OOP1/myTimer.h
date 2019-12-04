@@ -1,6 +1,8 @@
 #pragma once
 #include <time.h>
 #include<thread>
+
+#include"CHouse.h"
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 
@@ -15,8 +17,10 @@ public:
 	double ms;
 	double dur;
 	double theend;
-	//MyTimer();
 
+	int range;
+	//MyTimer();
+	House* p;
 	//MyTimer(int themillis);
 	MyTimer(void); //: time_in_millis(0) {}
 	MyTimer(unsigned int t_millis);// : time_in_millis(t_millis) {}

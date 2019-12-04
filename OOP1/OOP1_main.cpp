@@ -67,8 +67,8 @@ using std::cerr;
 
 int main() {
 	HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);   //Playsequence in own Thread
+	//HWND WINAPI GetConsoleWindow(void);
 	
-
 	CONSOLE_SCREEN_BUFFER_INFO csbi;     //get wigth height of screenbuffer
 	int columns, rows;
 
@@ -120,7 +120,7 @@ int main() {
     ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
 //	SendMessage(GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
 	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
-
+	
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);            // Get wigth height
 	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;                       // used to create SNowflake
 	rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
@@ -132,7 +132,7 @@ int main() {
 	bool issnowing = true;
 
 		//	input_Buffer_Events_main();
-	const unsigned n = 500;                   //number of TimerThreads ->Objects  
+	const unsigned n = 10;                   //number of TimerThreads ->Objects  
 
 
 
@@ -213,26 +213,23 @@ int main() {
 		
 	}
 	wait_for_key_event();
+	ShowConsoleCursor(true);
 	system("cls");
 	ShowConsoleCursor(false);
+	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, 0);
+	
 	ittim = listOfTimers.begin();
-	for (int i = 0; i < n; i++) {
-		
-		timerthread[i] = (*ittim)->runThread();
+	for (int i = 0; i < n; i++)
+	{
+	timerthread[i] = (*ittim)->runThread();
 	timerthread[i].detach();
 			ittim++;
-		}
-	while (1) {
-	
-	/*	for (auto v : listOfTimers) {
-		
+	}
 
-			
-				
-
-
-		}*/
-	
+	while (issnowing) {
+		/*	for (auto v : listOfTimers) {
+			}*/
 	}
 
 	while (issnowing) {
@@ -350,7 +347,7 @@ int main() {
 	
 
 	const char* c = "hello";
-	size_t objCount = 5;
+	size_t objCount = 20;
 
 	// allocates and constructs five objects:
 	//House* ourHouse = new House[objCount]{ {1},{3,4},{mys,127,255},{array,mys,127,255},{"Direct Street",mys,127,255} };
@@ -513,10 +510,10 @@ void ShowConsoleCursor(bool showFlag)
 
 void setBpm(int updown) {
 	(updown > 0) ? thebpm++ : thebpm--;
-
+	
 	ms = ((60000.0 / (double)thebpm) / (double)4);  //Milliseconds per quarternote
 	//ms = 125;  //Millisecond per quarternote
-	dur = (ms / 1000) * CLOCKS_PER_SEC;
+	//dur = (ms / 1000) * CLOCKS_PER_SEC;
 	//printf("MILLIS PER QUATER:%f\n", ms);
 	//printf("ms/Clocks :%f\n", dur);
 	//SetPosition(0, 0);
