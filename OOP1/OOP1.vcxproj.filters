@@ -33,6 +33,9 @@
     <ClCompile Include="thread_safe_random.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="fast_hsv2rgb_32bit.c">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CHouse.h">
@@ -48,6 +51,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="thread_safe_random.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="fast_hsv2rgb.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

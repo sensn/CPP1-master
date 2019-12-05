@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="CHouse.cpp" />
     <ClCompile Include="CHouseB.cpp" />
+    <ClCompile Include="fast_hsv2rgb_32bit.c" />
     <ClCompile Include="myTimer.cpp" />
     <ClCompile Include="OOP1_main.cpp" />
     <ClCompile Include="thread_safe_random.cpp" />
@@ -136,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="CHouse.h" />
     <ClInclude Include="CHouseB.h" />
+    <ClInclude Include="fast_hsv2rgb.h" />
     <ClInclude Include="Input_Buffer_Events.hpp" />
     <ClInclude Include="myTimer.h" />
     <ClInclude Include="thread_safe_random.hpp" />

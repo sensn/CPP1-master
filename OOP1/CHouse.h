@@ -16,6 +16,7 @@ private:
 
 	int yloc = rand()%10;
     int xloc =rand()%200;
+	char thechar = '$';
 	float lifespan =rand()%15+25;
 	//int x= x = RANDOM();
 	//***
@@ -32,6 +33,8 @@ public:
 	House(size_t t_height);
 	House(size_t t_height, size_t t_width);
 	House(int t_height, int t_width);
+	House(int t_height, int t_width, char t_tchar, int t_xloc);
+
 	House(std::string t_city, size_t t_width, size_t t_height);
 	House(const char* t_street, std::string t_city, size_t t_width, size_t t_height);
 	//Destructor
@@ -55,7 +58,8 @@ public:
 	void Update();
 	void DisplaySnowflake();
 	bool isDead();
-
+	
+	uint8_t r, g, b;
 	std::thread runThread() {
 		//std::this_thread::sleep_for(chrono::milliseconds(2000));
 		//Sleep(199);

@@ -64,7 +64,7 @@ using std::cin;
 using std::endl;
 using std::cerr;
 
-
+vector <unsigned int> times;
 int main() {
 	HANDLE thread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);   //Playsequence in own Thread
 	//HWND WINAPI GetConsoleWindow(void);
@@ -125,21 +125,23 @@ int main() {
 	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;                       // used to create SNowflake
 	rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
-	//printf("columns: %d\n", columns);
-	//printf("rows: %d\n", rows);
-
+	printf("columns: %d\n", columns);
+	printf("rows: %d\n", rows);
+	wait_for_key_event();
 	
 	bool issnowing = true;
 
 		//	input_Buffer_Events_main();
-	const unsigned n = 10;                   //number of TimerThreads ->Objects  
-
-
+	
+    std:string themessage = "THE MESSAGE";
+	const unsigned n = themessage.size();                   //number of TimerThreads ->Objects  
+	cout << n;
+	wait_for_key_event;
 
 	int ci = 0;
 	//std::thread tw1[n];
 	
-	std::thread timerthread[n];              //the threads
+	//std::thread timerthread[n];              //the threads
 	
 	
 	std::list<House*> listOfHouses;
@@ -191,15 +193,31 @@ int main() {
 	
 	//std::thread tw1 = el->runThread();
 	//tw1.join();
-	
+
 	for (int i = 0; i < n; i++) {
+		
+		printf("I : %d\n", i);
+		House* el = new House(rows, columns,themessage[i],i);
+		std::cout << themessage[i];
+		elements.push_back(el);
+	}
+	
+	std::cout<<"HUHUHUHU";
+	
+	wait_for_key_event();
+////*************
+	/*for (int i = 0; i < n; i++) {
 		printf("I : %d\n", i);
 		House* el = new House(rows, columns);
 		elements.push_back(el);
 	}
 	int len = elements.size();
-	printf("len elements %d\n", len);
-	
+	printf("len elements %d\n", len);*/
+////*************	
+
+
+
+
 
  //	for (int i = 0; i < len-3; i++) {
 	//	printf("löschen %d\n", elements.size());
@@ -238,7 +256,7 @@ int main() {
 
 
 	unsigned int tmp=0;
-	vector <unsigned int> times;
+	
 	for (int i = 0; i < n; i++) {
 		printf("I : %d", i);
 		//tmp = (rand() % (thebpm + 1 - 20)) + thebpm;
@@ -277,7 +295,7 @@ int main() {
 		timeit++;
 		std::this_thread::sleep_for(500ns);
 		//Sleep(1);
-		if (timeit == 20000)
+		if (timeit == 200000)
 			timeit = 0;
 	}
 
@@ -562,11 +580,25 @@ void ShowConsoleCursor(bool showFlag)
 
 void setBpm(int updown) {
 	
-		(updown > 0) ? thebpm += 100 : thebpm -= 100;
-		if (thebpm >20000 ) {
+		(updown > 0) ? thebpm += 1000 : thebpm -= 1000;
+
+		if (thebpm >200000 ) {
 	
 		thebpm = 20;
 	}
+
+	/*	for (int i = 0; i < times.size(); i++) {
+			if (times[i] < 100) {
+
+				times[i] = 200;
+			}
+			else {
+
+				times[i] = times[i] * thebpm / 1000;
+			}
+		}*/
+
+
 	//ms = ((60000.0 / (double)thebpm) / (double)4);  //Milliseconds per quarternote
 	//ms = 125;  //Millisecond per quarternote
 	//dur = (ms / 1000) * CLOCKS_PER_SEC;
