@@ -90,7 +90,7 @@ int main() {
 	system("pause");*/
 
 	//
-	SetConsoleTitle("IT'S SNOWING IN THE SNOW, IT'S SNOWING IN THE SNOW");        
+	SetConsoleTitle("THE MESSAGE IS THE MESSAGE");        
 
 	//remove ScrollBars
 
@@ -296,7 +296,7 @@ int main() {
 		std::this_thread::sleep_for(500ns);
 		//Sleep(1);
 		if (timeit == 200000)
-			timeit = 0;
+			timeit = 1;
 	}
 
 
