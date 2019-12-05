@@ -61,10 +61,23 @@ House::House(int t_height, int t_width) {
 	this->thechar = (rand() & 90 + 33);
 //	std::cout << "P Konstruktor Int Int \n";
 }
-House::House(int t_height, int t_width,char t_tchar,int t_xloc) {
+House::House(int t_height, int t_width, char t_tchar) {
 
 	this->yloc = (int)((RANDOM() * t_height) / 4) + 1;
-	this->xloc = t_xloc;
+	this->xloc = (RANDOM()*90)+33;
+	//this->xloc = (int)(RANDOM() * t_width);
+	this->lifespan = (int)((RANDOM() * t_height) - yloc);
+	this->m_height = t_height;
+	this->m_width = t_width;
+	this->thechar = t_tchar;
+	//	std::cout << "P Konstruktor Int Int \n";
+}
+House::House(int t_height, int t_width,char t_tchar,int t_xloc) {
+
+	//this->yloc = (int)((RANDOM() * t_height) / 4) + 1+ yoffset;
+	this->yloc = yoffset;
+
+	this->xloc = t_xloc+xoffset;
 	//this->xloc = (int)(RANDOM() * t_width);
 	this->lifespan = (int)((RANDOM() * t_height) - yloc);
 	this->m_height = t_height;
@@ -226,9 +239,11 @@ bool House::isDead() {
 		//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc, xloc, 0, 0, 0, 0, 0, 0);
 		//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1, xloc, 0, 0, 0, 0, 0, 0);
 		//Seed(rand() % 12);
-		this->yloc = (int)(RANDOM() * (m_height / 8));
+		
+		//this->yloc = (int)(RANDOM() * (m_height / 8))+ yoffset;
+		this->yloc = yoffset;
 		//Seed(rand() % 120);
-		this->xloc = (int)(RANDOM() * m_width);
+		//this->xloc = (int)(RANDOM() * m_width);
 		//Seed(rand() % 1200);
 		lifespan = (int)((RANDOM() * m_height) - yloc);
 		return true;
@@ -258,9 +273,11 @@ void House::DisplaySnowflake()
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc-1,xloc ,0,0,0,0, 0,0);    //mit Pos
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos
 	
-	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", yloc-1, xloc, 12, 12, 12, 12, 12, 12,thechar);
-	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", yloc,xloc ,r, g,b,0 , 0,0,thechar);    //mit Pos
-	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", 1, xloc, r, g, b, 0, 0, 0, thechar);
+	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", yloc-1, xloc, 12, 12, 12, 12, 12, 12,thechar);   //DELETE PREV
+	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", yloc,xloc ,r, g,b,0 , 0,0,thechar);    //mit Pos  //WRITE THIS
+	printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", yoffset, xloc, r, g, b, 0, 0, 0, thechar);        // THE MESSAGE
+
+
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm%c\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0,thechar);    //mit Pos
 	
 //printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dm*\x1b[0m\n", yloc,xloc ,rand()% 255, rand() % 255, rand() % 255,0 , 0,0);    //mit Pos

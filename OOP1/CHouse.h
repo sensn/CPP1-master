@@ -33,6 +33,7 @@ public:
 	House(size_t t_height);
 	House(size_t t_height, size_t t_width);
 	House(int t_height, int t_width);
+	House(int t_height, int t_width, char t_tchar);
 	House(int t_height, int t_width, char t_tchar, int t_xloc);
 
 	House(std::string t_city, size_t t_width, size_t t_height);
@@ -60,6 +61,9 @@ public:
 	bool isDead();
 	
 	uint8_t r, g, b;
+	uint8_t xoffset = 80;
+	uint8_t yoffset = 3;
+
 	std::thread runThread() {
 		//std::this_thread::sleep_for(chrono::milliseconds(2000));
 		//Sleep(199);

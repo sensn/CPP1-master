@@ -41,7 +41,7 @@ extern int posY;
 extern int myMouseB;
 extern int myKey;
 //extern int thebpm;
-unsigned int thebpm = 4440;
+unsigned int thebpm = 86020;
 int posX = 0;
 int posY = 0;
 int myMouseB = 0;
@@ -133,7 +133,7 @@ int main() {
 
 		//	input_Buffer_Events_main();
 	
-    std:string themessage = "THE MESSAGE";
+    std:string themessage = "THE MESSAGE IS THE MESSAGE";                   // THE MESSAGE
 	const unsigned n = themessage.size();                   //number of TimerThreads ->Objects  
 	cout << n;
 	wait_for_key_event;
@@ -605,8 +605,8 @@ void setBpm(int updown) {
 	//printf("MILLIS PER QUATER:%f\n", ms);
 	//printf("ms/Clocks :%f\n", dur);
 	//SetPosition(0, 0);
-	printf("\033[%d;%dH     ",1,1);
-	printf("\033[%d;%dH %u BPM",1,1, thebpm);
+	printf("\033[%d;%dH     ",3,1);
+	printf("\033[%d;%dH %u BPM",3,1, thebpm);
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmBPMCHANGE\x1b[0m\n", 1, 1, rand() % 255, rand() % 255, rand() % 255, 0, 0, 0);
 }
 
