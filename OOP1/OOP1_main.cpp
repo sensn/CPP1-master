@@ -41,7 +41,7 @@ extern int posY;
 extern int myMouseB;
 extern int myKey;
 //extern int thebpm;
-int thebpm = 100;
+unsigned int thebpm = 4440;
 int posX = 0;
 int posY = 0;
 int myMouseB = 0;
@@ -132,7 +132,7 @@ int main() {
 	bool issnowing = true;
 
 		//	input_Buffer_Events_main();
-	const unsigned n = 100;                   //number of TimerThreads ->Objects  
+	const unsigned n = 10;                   //number of TimerThreads ->Objects  
 
 
 
@@ -149,20 +149,20 @@ int main() {
 	
 	
 
-	//**TIMER THING
-	double myrnd;
-	for (int i = 0; i < n; i++) {
-		House* p = new House(rows,columns);
-		//p->id = 0;
-		listOfHouses.push_back(p);   //ein element einfügen
-		Seed(rand()%12000);
-		myrnd = (RANDOM() * 1000);
-		MyTimer* tim = new MyTimer((int) myrnd, rows,columns);                            //MYTIMER INIT
-		listOfTimers.push_back(tim);
-		
-	}
-	//listOfHouses.insert(listOfHouses.begin(),p );
-	//**TIMER THING
+	////**TIMER THING
+	//double myrnd;
+	//for (int i = 0; i < n; i++) {
+	//	House* p = new House(rows,columns);
+	//	//p->id = 0;
+	//	listOfHouses.push_back(p);   //ein element einfügen
+	//	Seed(rand()%12000);
+	//	myrnd = (RANDOM() * 1000);
+	//	MyTimer* tim = new MyTimer((int) myrnd, rows,columns);                            //MYTIMER INIT
+	//	listOfTimers.push_back(tim);
+	//	
+	//}
+	////listOfHouses.insert(listOfHouses.begin(),p );
+	////**TIMER THING
 	
 
 	/*for (auto v : listOfHouses){
@@ -222,19 +222,19 @@ int main() {
 	ShowConsoleCursor(true);
 	system("cls");
 	ShowConsoleCursor(false);
-	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+//	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, 0);
 	
-	//****************TIMER THREADS**************************
-	ittim = listOfTimers.begin();
-	for (int i = 0; i < n; i++)
-	{
-	timerthread[i] = (*ittim)->runThread();
-	timerthread[i].detach();
-			ittim++;
-	}
-	//****************
-	while(1){}
+	////****************TIMER THREADS**************************
+	//ittim = listOfTimers.begin();
+	//for (int i = 0; i < n; i++)
+	//{
+	//timerthread[i] = (*ittim)->runThread();
+	//timerthread[i].detach();
+	//		ittim++;
+	//}
+	////****************
+	//while(1){}
 
 
 	unsigned int tmp=0;
@@ -245,7 +245,7 @@ int main() {
 		//tmp =  30+rand() % 50;
 		//tmp = rand() % thebpm + 20;
 		Seed(rand() % 12000);
-		tmp = (RANDOM() * thebpm)+20;
+		tmp = (RANDOM() * (unsigned int) thebpm)+20;
 	    times.push_back(tmp);
 		printf("->  %d\n", tmp);
 	}
@@ -255,28 +255,31 @@ int main() {
 	unsigned int timeit = 0;
 	int timeslength = times.size();
 	
-	//while (issnowing) {
-	//	for (int i = 0; i < timeslength; i++) {
+	while (issnowing) {
+		for (int i = 0; i < timeslength; i++) {
 
-	//		if (timeit % times[i] == 0) {
-	//			elements[i]->Update();
-	//		}
-	//		if (elements[i]->isDead()) {
-	//			//tmp =(rand() % (thebpm + 1 - 20)) + thebpm;
-	//			//tmp = rand()%thebpm+20;
-	//			//tmp = (RANDOM() * thebpm)+20;
-	//			tmp = 30 + rand() % 50;
-	//			times[i] = tmp;
-	//			//	printf("\033[%d;%dH %d->  %d\n",2,2,i, times[i]);
-	//		}
+			if (timeit % times[i] == 0) {
+				elements[i]->Update();
+			}
+			if (elements[i]->isDead()) {
+				//tmp =(rand() % (thebpm + 1 - 20)) + thebpm;
+				//tmp = rand()%thebpm+20;
+				Seed(rand() % 12000);
+				tmp = (RANDOM() * (unsigned int) thebpm)+20;
+				//tmp = 30 + rand() % 50;
+				times[i] = tmp;
+					printf("\033[%d;%dH %d->            \n",2,2,i);
+					printf("\033[%d;%dH %d->  %d\n",2,2,i, times[i]);
+			}
 
 
-	//	}
-	//	timeit++;
-	//	Sleep(2);
-	//	if (timeit == 1000)
-	//		timeit = 0;
-	//}
+		}
+		timeit++;
+		std::this_thread::sleep_for(500ns);
+		//Sleep(1);
+		if (timeit == 20000)
+			timeit = 0;
+	}
 
 
 	while (issnowing) {
@@ -525,7 +528,7 @@ void sineH() {
 	}
 
 //	return 0;
-}
+} 
 
 void setSine(char array[MAXCOL][MAXROW], int cycles)
 {
@@ -558,15 +561,20 @@ void ShowConsoleCursor(bool showFlag)
 }
 
 void setBpm(int updown) {
-	(updown > 0) ? thebpm++ : thebpm--;
 	
-	ms = ((60000.0 / (double)thebpm) / (double)4);  //Milliseconds per quarternote
+		(updown > 0) ? thebpm += 100 : thebpm -= 100;
+		if (thebpm >20000 ) {
+	
+		thebpm = 20;
+	}
+	//ms = ((60000.0 / (double)thebpm) / (double)4);  //Milliseconds per quarternote
 	//ms = 125;  //Millisecond per quarternote
 	//dur = (ms / 1000) * CLOCKS_PER_SEC;
 	//printf("MILLIS PER QUATER:%f\n", ms);
 	//printf("ms/Clocks :%f\n", dur);
 	//SetPosition(0, 0);
-	printf("\033[%d;%dH %d BPM",1,1, thebpm);
+	printf("\033[%d;%dH     ",1,1);
+	printf("\033[%d;%dH %u BPM",1,1, thebpm);
 	//printf("\033[%d;%dH\x1b[38;2;%d;%d;%dm\x1b[48;2;%d;%d;%dmBPMCHANGE\x1b[0m\n", 1, 1, rand() % 255, rand() % 255, rand() % 255, 0, 0, 0);
 }
 
