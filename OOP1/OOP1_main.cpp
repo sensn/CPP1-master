@@ -133,7 +133,7 @@ int main() {
 
 		//	input_Buffer_Events_main();
 	
-    std:string themessage = "THE MESSAGE IS THE MESSAGE";                   // THE MESSAGE
+    std:string themessage = "THE MESSAGE IS THE MESSAGE IS THE MESSAGE";                   // THE MESSAGE
 	const unsigned n = themessage.size();                   //number of TimerThreads ->Objects  
 	cout << n;
 	wait_for_key_event;
